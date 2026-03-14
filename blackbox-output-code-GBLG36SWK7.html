@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛍️ DORA CLOTHES | ₹99 से ट्रेंडी कपड़े</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        
+        .glass-effect { 
+            background: rgba(255,255,255,0.1); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+        }
+        
+        .neon-glow { 
+            box-shadow: 0 0 30px rgba(255,103,119,0.5); 
+            transition: all 0.3s ease;
+        }
+        .neon-glow:hover { box-shadow: 0 0 50px rgba(255,103,119,0.8); transform: translateY(-10px); }
+        
+        .floating-card { 
+            animation: float 6s ease-in-out infinite; 
+        }
+        @keyframes float { 0%,100%{transform:translateY(0px);} 50%{transform:translateY(-20px);} }
+        
+        .magic-btn { 
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4); 
+            border: none; 
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .magic-btn:hover { transform: scale(1.1); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        
+        .offer-ring {
+            position: absolute;
+            top: -10px; right: -10px;
+            width: 60px; height: 60px;
+            border: 4px solid;
+            border-radius: 50%;
+            border-color: #ff4757;
+            border-top-color: transparent;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .product-3d { perspective: 1000px; }
+        .product-3d:hover img { transform: rotateY(10deg) rotateX(10deg); }
+    </style>
+</head>
+<body>
+    <!-- ✨ FLOATING NAVBAR -->
+    <nav class="navbar navbar-expand-lg fixed-top glass-effect neon-glow mt-3 mx-4">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold fs-2 text-white" href="#">
+                <i class="fas fa-gem text-warning me-2"></i>
+                DORA<span class="text-danger">CLOTHES</span>
+            </a>
+            <div class="d-flex gap-3">
+                <button class="btn btn-outline-light rounded-pill px-4" onclick="addNewProduct()">
+                    <i class="fas fa-magic me-1"></i> नया प्रोडक्ट
+                </button>
+                <button class="btn btn-warning rounded-circle p-2" onclick="showCart()" style="width:50px;height:50px;">
+                    <i class="fas fa-shopping-cart fs-5"></i> <span id="cartCount" class="badge bg-danger rounded-pill">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 🎆 HERO SECTION WITH PARTICLES -->
+    <section class="pt-5 mt-5 text-center text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="display-3 fw-bold mb-4 animate__animated animate__bounceIn">
+                        DORA CLOTHES
+                    </h1>
+                    <h2 class="fs-1 mb-4">🔥 80% OFF ALL ITEMS</h2>
+                    <p class="lead mb-4">ट्रेंडी कपड़े सिर्फ ₹99 से | COD Available</p>
+                    <button class="magic-btn fs-5 px-5 me-3" onclick="scrollToProducts()">
+                        <i class="fas fa-rocket me-2"></i>SHOP NOW
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <div class="floating-card glass-effect p-5 mx-auto" style="max-width:400px;">
+                        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400" class="img-fluid rounded-4 shadow-lg" alt="Fashion">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 🛍️ PRODUCTS SECTION -->
+    <section id="products" class="py-5">
+        <div class="container">
+            <h2 class="text-white text-center mb-5 display-5 fw-bold">
+                <i class="fas fa-fire text-danger me-3"></i>🔥 TRENDING COLLECTION
+            </h2>
+            <div class="row g-4" id="productsGrid">
+                <!-- Dynamic Products Here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ✨ ADD PRODUCT MODAL (Magic Style) -->
+    <div class="modal fade" id="productModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content glass-effect neon-glow">
+                <div class="modal-header border-0">
+                    <h4 class="modal-title text-white">
+                        <i class="fas fa-sparkles text-warning me-2"></i>मैजिक प्रोडक्ट ऐड करें
+                    </h4>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="file" id="productImg" class="form-control form-control-lg mb-3" accept="image/*">
+                            <input type="text" id="productTitle" class="form-control form-control-lg mb-3" placeholder="प्रोडक्ट का नाम">
+                            <input type="number" id="productPrice" class="form-control form-control-lg mb-3" placeholder="कीमत ₹">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="productOldPrice" class="form-control form-control-lg mb-3" placeholder="पुरानी कीमत ₹">
+                            <select id="productCategory" class="form-control form-control-lg mb-3">
+                                <option>👗 Women</option>
+                                <option>👔 Men</option>
+                                <option>👶 Kids</option>
+                                <option>💍 Accessories</option>
+                            </select>
+                            <textarea id="productDetails" class="form-control form-control-lg" rows="3" placeholder="विशेषताएं लिखें..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button class="magic-btn px-5" onclick="saveMagicProduct()">
+                        <i class="fas fa-save me-2"></i>मैजिक सेव!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🛒 CART MODAL -->
+    <div class="modal fade" id="cartModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content glass-effect">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-shopping-cart me-2"></i>मेरा कार्ट
+                    </h5>
+                </div>
+                <div class="modal-body" id="cartContent">
+                    अभी कुछ नहीं...
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success btn-lg w-100 magic-btn" onclick="processOrder()">
+                        <i class="fab fa-whatsapp me-2"></i>WhatsApp से ऑर्डर करें
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 🔥 DORA CLOTHES - SUPER SMART SYSTEM
+        let doraProducts = JSON.parse(localStorage.getItem('doraClothes')) || [];
+        let doraCart = JSON.parse(localStorage.getItem('doraCart')) || [];
+
+        // Auto-generate trending products
+        if (doraProducts.length === 0) {
+            doraProducts = [
+                {id:1, name:'ट्रेंडी मैक्सी ड्रेस', price:199, oldPrice:999, img:'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300', category:'Women', offer:80},
+                {id:2, name:'कॉटन शर्ट', price:149, oldPrice:599, img:'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=300', category:'Men', offer:75},
+                {id:3, name:'किड्स फ्रॉक', price:99, oldPrice:399, img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300', category:'Kids', offer:75}
+            ];
+            localStorage.setItem('doraClothes', JSON.stringify(doraProducts));
+        }
+
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = doraCart.reduce((sum, item) => sum + item.qty, 0);
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+            
+            doraProducts.forEach(product => {
+                grid.innerHTML += `
+                <div class="col-lg-3 col-md-6">
+                    <div class="card glass-effect neon-glow h-100 product-3d p-3 mb-4">
+                        <div class="offer-ring">${product.offer}%</div>
+                        <img src="${product.img}" class="card-img-top rounded-3 mb-3" style="height:250px;object-fit:cover;transition:transform 0.5s; cursor:pointer;" onclick="viewProduct(${product.id})">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-white mb-2">${product.name}</h6>
+                            <p class="text-white-50 small mb-3">${product.category}</p>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <del class="text-muted small">₹${product.oldPrice}</del>
+                                    <br><span class="fs-4 fw-bold text-danger">₹${product.price}</span>
+                                </div>
+                                <button class="btn magic-btn btn-sm" onclick="addToDoraCart(${product.id})">
+                                    <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            updateCartCount();
+        }
+
+        function addNewProduct() {
+            new bootstrap.Modal(document.getElementById('productModal')).show();
+        }
+
+        function saveMagicProduct() {
+            const imgFile = document.getElementById('productImg').files[0];
+            const product = {
+                id: Date.now(),
+                name: document.getElementById('productTitle').value || 'नया प्रोडक्ट',
+                price: parseInt(document.getElementById('productPrice').value) || 199,
+                oldPrice: parseInt(document.getElementById('productOldPrice').value) || 999,
+                category: document.getElementById('productCategory').value,
+                details: document.getElementById('productDetails').value,
+                offer: Math.floor(Math.random() * 30) + 50,
+                img: imgFile ? URL.createObjectURL(imgFile) : 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300'
+            };
+            
+            doraProducts.unshift(product);
+            localStorage.setItem('doraClothes', JSON.stringify(doraProducts));
+            renderProducts();
+            
+            // Reset form
+            document.getElementById('productModal').querySelectorAll('input, textarea, select').forEach(el => el.value = '');
+            bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
+            
+            // Magic Animation
+            document.body.style.animation = 'shake 0.5s';
+            setTimeout(() => document.body.style.animation = '', 500);
+        }
+
+        function addToDoraCart(productId) {
+            const product = doraProducts.find(p => p.id === productId);
+            const cartItem = doraCart.find(item => item.id === productId);
+            
+            if (cartItem) {
+                cartItem.qty += 1;
+            } else {
+                doraCart.push({...product, qty: 1});
+            }
+            
+            localStorage.setItem('doraCart', JSON.stringify(doraCart));
+            updateCartCount();
+            
+            // Magic particles effect
+            createMagicEffect(event.target);
+        }
+
+        function createMagicEffect(element) {
+            const magic = document.createElement('div');
+            magic.innerHTML = '✨';
+            magic.style.cssText = `
+                position: fixed; top: ${event.clientY}px; left: ${event.clientX}px;
+                font-size: 30px; pointer-events: none; z-index: 9999;
+                animation: magicFly 1s ease-out forwards;
+            `;
+            document.body.appendChild(magic);
+            setTimeout(() => magic.remove(), 1000);
+        }
+
+        function showCart() {
+            const content = document.getElementById('cartContent');
+            if (doraCart.length === 0) {
+                content.innerHTML = '<div class="text-center py-5"><i class="fas fa-shopping-cart fs-1 text-muted mb-3"></i><h5>कार्ट खाली है</h5></div>';
+            } else {
+                let html = '';
+                let total = 0;
+                doraCart.forEach((item, index) => {
+                    total += item.price * item.qty;
+                    html += `
+                    <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                        <div>
+                            <h6>${item.name}</h6>
+                            <small class="text-muted">${item.category}</small>
+                        </div>
+                        <div class="text-end">
+                            <div>₹${item.price} x ${item.qty}</div>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-secondary" onclick="updateQty(${index}, -1)">-</button>
+                                <span class="btn btn-outline-light px-3">${item.qty}</span>
+                                <button class="btn btn-outline-secondary" onclick="updateQty(${index}, 1)">+</button>
+                                <button class="btn btn-danger" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                html += `<hr><div class="h4 text-success fw-bold">कुल: ₹${total}</div>`;
+                content.innerHTML = html;
+            }
+            new bootstrap.Modal(document.getElementById('cartModal')).show();
+        }
+
+        function updateQty(index, change) {
+            doraCart[index].qty += change;
+            if (doraCart[index].qty <= 0) {
+                doraCart.splice(index, 1);
+            }
+            localStorage.setItem('doraCart', JSON.stringify(doraCart));
+            showCart();
+            updateCartCount();
+        }
+
+        function removeFromCart(index) {
+            doraCart.splice(index, 1);
+            localStorage.setItem('doraCart', JSON.stringify(doraCart));
+            showCart();
+            updateCartCount();
+        }
+
+        function processOrder() {
+            if (doraCart.length === 0) return;
+            
+            let orderMsg = `🛍️ *DORA CLOTHES ऑर्डर*\n\n`;
+            let total = 0;
+            doraCart.forEach(item => {
+                orderMsg += `• ${item.name} (${item.qty}) - ₹${item.price * item.qty}\n`;
+                total += item.price * item.qty;
+            });
+            orderMsg += `\n💰 *कुल: ₹${total}*\n`;
+            orderMsg += `📦 डिलीवरी: 3-5 दिन\n`;
+            orderMsg += `📞 संपर्क: 98XXXXXXX\n`;
+            orderMsg += `💳 UPI: doraclothes@paytm`;
+
+            const whatsappUrl = `https://wa.me/9198XXXXXXXX?text=${encodeURIComponent(orderMsg)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function scrollToProducts() {
+            document.getElementById('products').scrollIntoView({behavior: 'smooth'});
+        }
+
+        // Load everything
+        renderProducts();
+        
+        // PWA Ready - Installable
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            deferredPrompt = e;
+        });
+    </script>
+    
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        @keyframes magicFly {
+            to { transform: translateY(-100px) scale(0); opacity
